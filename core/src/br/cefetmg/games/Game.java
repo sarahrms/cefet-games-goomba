@@ -21,9 +21,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * @author fegemo
  */
 public class Game extends ApplicationAdapter {
-
+    private float TimeCounter;
     private SpriteBatch batch;
     private Texture[] mapLevelsTextures;
+    private Goomba goomba;
     
     /**
      * No método create colocamos código de inicialização do jogo. Por exemplo,
@@ -36,8 +37,8 @@ public class Game extends ApplicationAdapter {
         batch = new SpriteBatch();
         mapLevelsTextures = new Texture[2];
         mapLevelsTextures[0] = new Texture("map-level-1.png");
-
-        
+        mapLevelsTextures[1] = new Texture("map-level-2.png");
+        goomba = new Goomba("goomba.png", 30, 10);
         // cor de fundo da tela: branco
         Gdx.gl.glClearColor(1, 1, 1, 1);        
     }
@@ -72,7 +73,8 @@ public class Game extends ApplicationAdapter {
         batch.begin();        
             // desenhos são realizados aqui
             batch.draw(mapLevelsTextures[0], 0, 0);
-
+            goomba.draw(batch);
+            batch.draw(mapLevelsTextures[1], 0, 0);            
         batch.end();
     }
 
@@ -86,11 +88,16 @@ public class Game extends ApplicationAdapter {
      *
      * @param delta o tempo que passou desde o último "quadro".
      */
-    public void update(float delta) {
+    public void update(float delta) {      
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             Gdx.app.exit();
         }
-
+        if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+            if(goomba.sprite.getY()+1 <= Gdx.graphics.getHeight()-goomba.)
+        }
+        
+        
+        this.TimeCounter += Gdx.graphics.getDeltaTime();
         // ...
     }
     
