@@ -24,23 +24,19 @@ public class Game extends ApplicationAdapter {
     private float TimeCounter;
     private SpriteBatch batch;
     private Texture[] mapLevelsTextures;
-    private Goomba goomba;
-    
-    /**
-     * No método create colocamos código de inicialização do jogo. Por exemplo,
-     * carregamos texturas, sons e outros recursos. Aqui também instanciamos
-     * e posicionamos os elementos que compõem a cena do jogo, como personagens,
-     * inimigos, o mapa etc.
-     */
+    private Goomba goomba;    
+  
     @Override
     public void create() {
         batch = new SpriteBatch();
         mapLevelsTextures = new Texture[2];
         mapLevelsTextures[0] = new Texture("map-level-1.png");
         mapLevelsTextures[1] = new Texture("map-level-2.png");
-        goomba = new Goomba("goomba.png", 30, 10);
+        goomba = new Goomba("goomba-spritesheet.png", 0, 0, 21, 24);
+        this.TimeCounter = 0;          
+        
         // cor de fundo da tela: branco
-        Gdx.gl.glClearColor(1, 1, 1, 1);        
+        Gdx.gl.glClearColor(1, 1, 1, 1);         
     }
 
     /**
@@ -67,13 +63,12 @@ public class Game extends ApplicationAdapter {
         // chamando o método update(), que atualiza a lógica do jogo.
         // passa para o método quanto tempo se passou desde a última vez
         // que renderizamos
-        update(Gdx.graphics.getDeltaTime());
-        
+        update(Gdx.graphics.getDeltaTime());        
 
         batch.begin();        
             // desenhos são realizados aqui
             batch.draw(mapLevelsTextures[0], 0, 0);
-            goomba.draw(batch);
+            goomba.draw(batch,TimeCounter);
             batch.draw(mapLevelsTextures[1], 0, 0);            
         batch.end();
     }
@@ -92,13 +87,38 @@ public class Game extends ApplicationAdapter {
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             Gdx.app.exit();
         }
-        if (Gdx.input.isKeyJustPressed(Keys.UP)) {
-            if(goomba.sprite.getY()+1 <= Gdx.graphics.getHeight()-goomba.)
+        else if (Gdx.input.isKeyPressed(Keys.UP)) {
+            if(goomba.getPositionY()+1 <= Gdx.graphics.getHeight()-goomba.getHeight()){
+                goomba.setCurrentAnimation(goomba.getWalkUp());
+                goomba.setPositionY(goomba.getPositionY()+1);
+                goomba.setWalking(true);                
+            }
         }
-        
-        
-        this.TimeCounter += Gdx.graphics.getDeltaTime();
-        // ...
+        else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+            if(goomba.getPositionY()-1 >= 0){
+                goomba.setCurrentAnimation(goomba.getWalkDown());
+                goomba.setPositionY(goomba.getPositionY()-1);
+                goomba.setWalking(true);
+            }
+        }
+        else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+            if(goomba.getPositionX()+1 <= Gdx.graphics.getWidth()-goomba.getWidth()){
+                goomba.setCurrentAnimation(goomba.getWalkRight());
+                goomba.setPositionX(goomba.getPositionX()+1);
+                goomba.setWalking(true);
+            }
+        }
+        else if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+            if(goomba.getPositionX()-1 >= 0){
+                goomba.setCurrentAnimation(goomba.getWalkLeft());
+                goomba.setPositionX(goomba.getPositionX()-1);
+                goomba.setWalking(true);
+            }
+        }
+        else {
+            goomba.setWalking(false);
+        }
+        this.TimeCounter += Gdx.graphics.getDeltaTime();        
     }
     
 }
